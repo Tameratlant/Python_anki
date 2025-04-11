@@ -4,7 +4,11 @@
 <div class="add-card-container">
     <h1 class="add-card-title">Добавить новую карточку</h1>
     
-    <form method="POST" action="{{ url_for('add_cards') }}" class="card-form">
+    {% if success_message %}
+    <div class="success-message">{{ success_message }}</div>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('add_cards') }}" class="card-form" id="card-form">
         {{ form.hidden_tag() }}
         
         <div class="form-row">
@@ -60,7 +64,7 @@ function updateSelectedColor() {
     const selectedColor = document.querySelector('#color').value;
     document.querySelector(`.color-${selectedColor}`).classList.add('selected');
 }
-// Инициализация при загрузке
+
 document.addEventListener('DOMContentLoaded', function() {
     if (!document.querySelector('#color').value) {
         document.querySelector('#color').value = 'red';
