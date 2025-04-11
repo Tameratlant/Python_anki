@@ -59,3 +59,15 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Создаём таблицы в БД
     app.run(debug=True)
+
+class AddCardForm(FlaskForm):
+    front_text = StringField('Загаданное слово', validators=[DataRequired()], render_kw={"placeholder": "Введите загаданное слово"})
+    back_text = StringField('Ответ', validators=[DataRequired()], render_kw={"placeholder": "Введите правильный ответ"})
+    tag = StringField('Тег', validators=[DataRequired()], render_kw={"placeholder": "Например: 'глаголы', 'еда'"})
+    color = SelectField('Цвет карточки', choices=[
+        ('red', 'Красный'),
+        ('blue', 'Синий'),
+        ('green', 'Зелёный'),
+        ('yellow', 'Жёлтый')
+    ], default='red', validators=[DataRequired()])
+    submit = SubmitField('Добавить карточку')

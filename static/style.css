@@ -63,3 +63,109 @@ h1 {
 .btn:nth-child(2):hover { background-color: #27ae60; }
 .btn:nth-child(3):hover { background-color: #c0392b; }
 .btn:nth-child(4):hover { background-color: #d35400; }
+
+/* Стили для формы добавления карточки */
+.add-card-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.add-card-title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-row label {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1rem;
+}
+
+.form-input {
+    padding: 0.8rem 1rem;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.color-selector {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.color-option.selected {
+    border-color: #2c3e50;
+    transform: scale(1.1);
+}
+
+.color-red { background-color: #ff7675; }
+.color-blue { background-color: #74b9ff; }
+.color-green { background-color: #55efc4; }
+.color-yellow { background-color: #ffeaa7; }
+
+.submit-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.back-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
