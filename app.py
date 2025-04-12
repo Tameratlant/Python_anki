@@ -89,6 +89,25 @@ def guess_all():
     cards = Card.query.all()
     return render_template('guess_all.html', cards=cards)
 
+@app.route('/edit_card/<int:card_id>', methods=['GET', 'POST'])
+def edit_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    form = AddCardForm(obj=card)
+    
+    if form.validate_on_submit():
+        form.populate_obj(card)
+        db.session.commit()
+        return redirect(url_for('my_cards'))
+    
+    return render_template('edit_card.html', form=form, card_id=card_id)
+
+@app.route('/delete_card/<int:card_id>', methods=['POST'])
+def delete_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    db.session.delete(card)
+    db.session.commit()
+    return redirect(url_for('my_cards'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Создаём таблицы в БД
