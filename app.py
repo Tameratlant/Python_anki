@@ -4,10 +4,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired
 from datetime import datetime
+import random
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cards.db'
-app.config['SECRET_KEY'] = 'your-secret-key-here'  # Измените на реальный секретный ключ
+app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 db = SQLAlchemy(app)
 
@@ -63,11 +64,9 @@ def add_cards():
         db.session.add(new_card)
         db.session.commit()
         
-        # Для AJAX-запросов
         if request.headers.get('Accept') == 'application/json':
             return jsonify({'success': True})
         
-        # Для обычной отправки формы (если отключен JavaScript)
         flash('Карточка успешно добавлена!', 'success')
         return redirect(url_for('add_cards'))
     
@@ -83,11 +82,6 @@ def guess_by_tags():
     tags = db.session.query(Card.tag.distinct()).all()
     tags = [tag[0] for tag in tags]
     return render_template('guess_by_tags.html', tags=tags)
-
-@app.route('/guess_all')
-def guess_all():
-    cards = Card.query.all()
-    return render_template('guess_all.html', cards=cards)
 
 @app.route('/edit_card/<int:card_id>', methods=['GET', 'POST'])
 def edit_card(card_id):
@@ -108,6 +102,31 @@ def delete_card(card_id):
     db.session.commit()
     return redirect(url_for('my_cards'))
 
+@app.route('/guess_all')
+def guess_all():
+    # Получаем все карточки
+    cards = Card.query.all()
+    if not cards:
+        return render_template('guess_all.html', card=None)
+    
+    # Выбираем случайную карточку
+    card = random.choice(cards)
+    return render_template('guess_all.html', card=card)
+
+@app.route('/handle_answer/<int:card_id>', methods=['POST'])
+def handle_answer(card_id):
+    card = Card.query.get_or_404(card_id)
+    is_correct = request.form.get('is_correct') == 'true'
+    next_page = request.form.get('next', 'guess_all')
+    
+    if is_correct:
+        card.correct_answers += 1
+    else:
+        card.wrong_answers += 1
+    card.last_reviewed = datetime.utcnow()
+    db.session.commit()
+    
+    return redirect(url_for(next_page))
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Создаём таблицы в БД
