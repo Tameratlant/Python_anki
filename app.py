@@ -12,7 +12,6 @@ app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 db = SQLAlchemy(app)
 
-# Модель карточки
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     front_text = db.Column(db.String(100), nullable=False)
@@ -21,6 +20,7 @@ class Card(db.Model):
     color = db.Column(db.String(20), nullable=False)
     correct_answers = db.Column(db.Integer, default=0)
     wrong_answers = db.Column(db.Integer, default=0)
+    last_wrong_answer = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_reviewed = db.Column(db.DateTime)
 
@@ -108,9 +108,7 @@ def guess_all():
     cards = Card.query.all()
     if not cards:
         return render_template('guess_all.html', card=None)
-    
-    # Выбираем случайную карточку
-    card = random.choice(cards)
+    card = random.choice(cards)  
     return render_template('guess_all.html', card=card)
 
 @app.route('/handle_answer/<int:card_id>', methods=['POST'])
@@ -123,10 +121,12 @@ def handle_answer(card_id):
         card.correct_answers += 1
     else:
         card.wrong_answers += 1
+        card.last_wrong_answer = datetime.utcnow()  # Запоминаем время последнего неправильного ответа
+    
     card.last_reviewed = datetime.utcnow()
     db.session.commit()
-    
     return redirect(url_for(next_page))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Создаём таблицы в БД
