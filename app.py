@@ -104,28 +104,35 @@ def delete_card(card_id):
 
 @app.route('/guess_all')
 def guess_all():
-    # Получаем все карточки
-    cards = Card.query.all()
+    # Получаем только карточки с неправильными ответами или еще не изученные
+    cards = Card.query.filter(
+        (Card.correct_answers == 0) | 
+        (Card.wrong_answers > Card.correct_answers)
+    ).all()
+    
     if not cards:
-        return render_template('guess_all.html', card=None)
-    card = random.choice(cards)  
+        # Если все карточки угаданы, показываем сообщение
+        return render_template('all_cards_learned.html')
+    
+    # Выбираем случайную карточку из оставшихся
+    card = random.choice(cards)
     return render_template('guess_all.html', card=card)
 
 @app.route('/handle_answer/<int:card_id>', methods=['POST'])
 def handle_answer(card_id):
     card = Card.query.get_or_404(card_id)
     is_correct = request.form.get('is_correct') == 'true'
-    next_page = request.form.get('next', 'guess_all')
     
     if is_correct:
         card.correct_answers += 1
     else:
         card.wrong_answers += 1
-        card.last_wrong_answer = datetime.utcnow()  # Запоминаем время последнего неправильного ответа
+        card.last_wrong_answer = datetime.utcnow()
     
     card.last_reviewed = datetime.utcnow()
     db.session.commit()
-    return redirect(url_for(next_page))
+    
+    return redirect(url_for('guess_all'))
 
 if __name__ == '__main__':
     with app.app_context():

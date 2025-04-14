@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="learned-container">
+    <h1>Поздравляем! 🎉</h1>
+    <p>Вы успешно изучили все карточки!</p>
+    <div class="actions">
+        <a href="{{ url_for('my_cards') }}" class="btn btn-primary">Мои карточки</a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">На главную</a>
+    </div>
+</div>
+{% endblock %}
