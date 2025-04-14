@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="learned-container">
+    <h1>Обучение завершено! 🎉</h1>
+    <p>Вы изучили все карточки с тегом "{{ tag }}" 
+       {% if color != 'all' %}цвета {{ color }}{% endif %}.</p>
+    <div class="actions">
+        <a href="{{ url_for('guess_by_tags') }}" class="btn btn-primary">Выбрать другой тег</a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">На главную</a>
+    </div>
+</div>
+{% endblock %}

@@ -459,7 +459,6 @@ h1 {
     box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
-/* Адаптивность */
 @media (max-width: 600px) {
     .actions {
         flex-direction: column;
@@ -469,4 +468,36 @@ h1 {
     .btn {
         width: 100%;
     }
+}
+
+/* Стили для выбора тегов */
+.select-tags-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tags-form {
+    margin: 2rem 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
 }
