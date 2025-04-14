@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="practice-container">
+    <h1>Изучение тега: {{ session.selected_tag }}</h1>
+    {% if session.selected_color != 'all' %}
+    <p>Цвет: {{ session.selected_color }}</p>
+    {% endif %}
+    <p>Осталось карточек: {{ session.cards_to_learn|length }}</p>
+    
+    <div class="flashcard" onclick="toggleAnswer()">
+        <div class="card-front {{ card.color }}">
+            {{ card.front_text }}
+        </div>
+        <div class="card-back {{ card.color }}" style="display: none;">
+            {{ card.back_text }}
+        </div>
+    </div>
+    
+    <div class="answer-buttons" style="display: none;">
+        <form method="POST" action="{{ url_for('handle_tags_answer', card_id=card.id) }}">
+            <button type="submit" name="is_correct" value="true" class="btn-correct">Верно</button>
+            <button type="submit" name="is_correct" value="false" class="btn-wrong">Неверно</button>
+        </form>
+    </div>
+    
+    <div class="stats">
+        <p>Правильных: {{ card.correct_answers }} | Неправильных: {{ card.wrong_answers }}</p>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="back-link">← Прервать обучение</a>
+</div>
+
+<script>
+function toggleAnswer() {
+    const front = document.querySelector('.card-front');
+    const back = document.querySelector('.card-back');
+    const buttons = document.querySelector('.answer-buttons');
+    
+    if (front.style.display !== 'none') {
+        front.style.display = 'none';
+        back.style.display = 'block';
+        buttons.style.display = 'flex';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags-container">
+    <h1>Выберите тег для изучения</h1>
+    
+    {% if tags %}
+    <div class="tags-list">
+        {% for tag in tags %}
+        <a href="{{ url_for('practice_by_tag', tag=tag) }}" class="tag-item">
+            {{ tag }}
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-tags">
+        <p>У вас пока нет карточек с тегами.</p>
+        <a href="{{ url_for('add_cards') }}" class="btn">Добавить карточки</a>
+    </div>
+    {% endif %}
+    
+    <a href="{{ url_for('index') }}" class="back-link">← Вернуться на главную</a>
+</div>
+{% endblock %}

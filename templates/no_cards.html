@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="no-cards-container">
+    <h1>Нет карточек для изучения</h1>
+    <p>У вас пока нет карточек. Добавьте карточки, чтобы начать обучение.</p>
+    <a href="{{ url_for('add_cards') }}" class="btn">Добавить карточки</a>
+    <a href="{{ url_for('index') }}" class="btn-secondary">На главную</a>
+</div>
+{% endblock %}

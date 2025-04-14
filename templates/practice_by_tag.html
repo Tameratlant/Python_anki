@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="practice-container">
+    <h1>Режим изучения: Тег "{{ tag }}"</h1>
+    
+    <div class="card-practice" onclick="toggleAnswer()">
+        <div class="card-front">
+            {{ card.front_text }}
+        </div>
+        <div class="card-back" style="display: none;">
+            {{ card.back_text }}
+        </div>
+    </div>
+    
+    <div class="answer-buttons" style="display: none;">
+        <form id="answer-form" method="POST" action="{{ url_for('practice_by_tag', tag=tag) }}">
+            <input type="hidden" name="card_id" value="{{ card.id }}">
+            <button type="button" class="btn-correct" onclick="submitAnswer(true)">Верно</button>
+            <button type="button" class="btn-wrong" onclick="submitAnswer(false)">Неверно</button>
+        </form>
+    </div>
+    
+    <div class="progress-info">
+        Правильных ответов: {{ card.correct_answers }} | Неправильных: {{ card.wrong_answers }}
+    </div>
+</div>
+
+<script>
+// Тот же JavaScript, что и в practice_all.html
+</script>
+{% endblock %}

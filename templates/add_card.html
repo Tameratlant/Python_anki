@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="add-card-container">
+    <h1 class="add-card-title">Добавить новую карточку</h1>
+    
+    {% if success_message %}
+    <div class="success-message">{{ success_message }}</div>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('add_cards') }}" class="card-form" id="card-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-row">
+            {{ form.front_text.label }}
+            {{ form.front_text(class="form-input", placeholder="Введите загаданное слово") }}
+            {% for error in form.front_text.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-row">
+            {{ form.back_text.label }}
+            {{ form.back_text(class="form-input", placeholder="Введите правильный ответ") }}
+            {% for error in form.back_text.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-row">
+            {{ form.tag.label }}
+            {{ form.tag(class="form-input", placeholder="Например: 'глаголы', 'еда'") }}
+            {% for error in form.tag.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-row">
+            <label>Цвет карточки</label>
+            <div class="color-selector">
+                <div class="color-option color-red {% if form.color.data == 'red' %}selected{% endif %}" 
+                     onclick="document.querySelector('#color').value = 'red'; updateSelectedColor()"></div>
+                <div class="color-option color-blue {% if form.color.data == 'blue' %}selected{% endif %}" 
+                     onclick="document.querySelector('#color').value = 'blue'; updateSelectedColor()"></div>
+                <div class="color-option color-green {% if form.color.data == 'green' %}selected{% endif %}" 
+                     onclick="document.querySelector('#color').value = 'green'; updateSelectedColor()"></div>
+                <div class="color-option color-yellow {% if form.color.data == 'yellow' %}selected{% endif %}" 
+                     onclick="document.querySelector('#color').value = 'yellow'; updateSelectedColor()"></div>
+            </div>
+            {{ form.color(id="color", style="display: none") }}
+        </div>
+        
+        {{ form.submit(class="submit-btn", value="Добавить карточку") }}
+    </form>
+    
+    <a href="{{ url_for('index') }}" class="back-link">← Вернуться на главную</a>
+</div>
+
+<script>
+function updateSelectedColor() {
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    const selectedColor = document.querySelector('#color').value;
+    document.querySelector(`.color-${selectedColor}`).classList.add('selected');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.querySelector('#color').value) {
+        document.querySelector('#color').value = 'red';
+    }
+    updateSelectedColor();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="select-tags-container">
+    <h1>Выберите параметры изучения</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <h1>Выберите параметры изучения</h1>
+    
+    <form method="POST" action="{{ url_for('guess_by_tags') }}" class="tags-form">
+        <div class="form-group">
+            <label for="tag">Тег:</label>
+            <select name="tag" id="tag" class="form-control" required>
+                {% for tag in tags %}
+                <option value="{{ tag }}">{{ tag }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="color">Цвет:</label>
+            <select name="color" id="color" class="form-control">
+                <option value="all">Все цвета</option>
+                <option value="red">Красный</option>
+                <option value="blue">Синий</option>
+                <option value="green">Зеленый</option>
+                <option value="yellow">Желтый</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Начать изучение</button>
+    </form>
+    
+    <a href="{{ url_for('index') }}" class="back-link">← На главную</a>
+</div>
+{% endblock %}

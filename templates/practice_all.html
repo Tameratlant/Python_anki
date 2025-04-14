@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="practice-container">
+    <h1>Режим изучения всех карточек</h1>
+    
+    <div class="card-wrapper">
+        <div class="flashcard" onclick="toggleCard()">
+            <div class="card-front {% if card.color %}{{ card.color }}{% endif %}">
+                {{ card.front_text }}
+            </div>
+            <div class="card-back {% if card.color %}{{ card.color }}{% endif %}" style="display: none;">
+                {{ card.back_text }}
+            </div>
+        </div>
+        
+        <div class="answer-buttons" style="display: none;">
+            <form action="{{ url_for('handle_answer', card_id=card.id) }}" method="post">
+                <button type="submit" name="is_correct" value="true" class="btn-correct">Верно</button>
+                <button type="submit" name="is_correct" value="false" class="btn-wrong">Неверно</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="stats">
+        <p>Правильных ответов: {{ card.correct_answers }}</p>
+        <p>Неправильных ответов: {{ card.wrong_answers }}</p>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="back-link">← Вернуться на главную</a>
+</div>
+
+<script>
+function toggleCard() {
+    const front = document.querySelector('.card-front');
+    const back = document.querySelector('.card-back');
+    const buttons = document.querySelector('.answer-buttons');
+    
+    if (front.style.display !== 'none') {
+        front.style.display = 'none';
+        back.style.display = 'block';
+        buttons.style.display = 'block';
+    } else {
+        front.style.display = 'block';
+        back.style.display = 'none';
+        buttons.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
